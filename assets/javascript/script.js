@@ -11,7 +11,7 @@ let renderClock = function() {
     $("#currentDay").text(today);  
 }
 
-// Determening background color for each hour block depending if hour block is past, present or future of current (live) momenent() hour
+// Setting background color for each hour block depends on if hour block is past, present or future of current (live) momenent() hour
 for (let i = 0; i < hourBlocks.length; i++) {
     // Using this for loop to also populate scheduler with hours in hour blocks  
     var currentHour = startOfDay.clone().add(i, "hour");
@@ -47,17 +47,22 @@ function saveToLocalStorage(event) {
 function renderLastEvents(){
     // calling saved data from local storage
     var lastEvents = JSON.parse(localStorage.getItem("events"))
+    console.log(lastEvents);
      let allTextAreas = $("textarea[name='inputEvent']")
     // Using for loop to put saved events back to scheduler
+    if (lastEvents == null){
+        return
+    } else{
         for(let i=0; i < lastEvents.length; i++){
         allTextAreas[i].value = lastEvents[i];
         };
+    }
 };
 
 // Calling these functions at initial page load and setting a time interval of 1sec for moment() dynamically update on web page
-renderLastEvents();
 renderClock();
 setInterval(renderClock,1000);
+renderLastEvents();
 
 // Setting a event lister when user saves events
 allForms.on("submit", saveToLocalStorage);
